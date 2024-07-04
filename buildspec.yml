@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  pre_build:
+     commands:
+      - echo logging to amazon ECR ... `date`
+      - aws --version
+      - aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 738892453178.dkr.ecr.ca-central-1.amazonaws.com
+      - echo setting repository uri
+      - REPOSITPORY_URI=738892453178.dkr.ecr.ca-central-1.amazonaws.com/api-cicdpipeline
+      - echo setting image tag
+      - IMAGE_TAG=build-$(echo $CODBUILD_BUILD_ID | awk -F":" '{print $2)}')	  
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo runing mvn clean install ...
+      - mvn clean install
+      - echo Building the Docker image...          
+      - docker build -t $REPOSITPORY_URI:latset .
+      - echo taging docker image ...
+      - docker tag $REPOSITPORY_URI:latset $REPOSITPORY_URI:$IMAGE_TAG    
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image to Amazon ECR `date`
+      - docker push $REPOSITPORY_URI:latset
+      - docker push $REPOSITPORY_URI:$IMAGE_TAG
+      - echo setting container name 
+      - DOCKER_CONTAINER_NAME=api-cicd-container
+      - echo writting image definition file ...
+      - printf '[{"name":"%s"}, "imageUri":"%s"]' $DOCKER_CONTAINER_NAME $REPOSITPORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo printing imagedefinitions.json
+      - cat imagedefinitions.json
+artifacts:
+   files:
+     - imagedefinitions.json
