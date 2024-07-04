@@ -13,7 +13,8 @@ phases:
       - echo setting repository uri
       - REPOSITPORY_URI=738892453178.dkr.ecr.ca-central-1.amazonaws.com/api-cicdpipeline
       - echo setting image tag
-      - IMAGE_TAG=build-$(echo $CODBUILD_BUILD_ID | awk -F":" '{print $2}')	  
+      - echo $CODEBUILD_BUILD_ID
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')	  
   build:
     commands:
       - echo Build started on `date`
