@@ -14,6 +14,6 @@ public class HelloController {
     }
 	@GetMapping("/hello")
     ResponseEntity<Map<String,String>> hello(){
-    	return ResponseEntity.ok().body(Map.of("test","hello everyone, GSC Api is running"));
+    	return ResponseEntity.ok().body(Map.of("test","hello everyone, GSC Api is running, and slimane"));
     }
 }
