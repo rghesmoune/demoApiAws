@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 	@GetMapping()
     ResponseEntity<Map<String,String>> test(){
-    	return ResponseEntity.ok().body(Map.of("Status","Up"));
+    	return ResponseEntity.ok().body(Map.of("Status","Up Up"));
     }
 	@GetMapping("/hello")
     ResponseEntity<Map<String,String>> hello(){
