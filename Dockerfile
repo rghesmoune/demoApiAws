@@ -13,4 +13,4 @@ FROM openjdk
 # Copy the built JAR file from the previous stage to the container
 COPY --from=build /app/target/*.jar app.jar
 # Set the command to run the application
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar","-Dspring.profiles.active=prod", "app.jar"]
