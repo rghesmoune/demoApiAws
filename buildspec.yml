@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  variables:
+     SPRING_PROFILES_ACTIVE="prod"
 phases:
   install:  
     commands: 
