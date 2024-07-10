@@ -10,8 +10,7 @@ COPY . /app
 RUN mvn clean package -DskipTests
 # Use an official OpenJDK image as the base image
 FROM openjdk
-ENV SPRING_PROFILES_ACTIVE=prod
 # Copy the built JAR file from the previous stage to the container
 COPY --from=build /app/target/*.jar app.jar
-# Set the command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Set the command to run the application with prod profile
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/app.jar"]
